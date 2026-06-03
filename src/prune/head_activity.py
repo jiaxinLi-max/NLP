@@ -92,6 +92,23 @@ class HeadActivityPruner(Pruner):
                 mask[h, idxs] = True
             per_head_masks.append(mask)
 
+        # Layer 0 must hold max kv_len for HF's global mask.
+        max_kept = max(idx.numel() for idx in keep_indices_per_layer)
+        if keep_indices_per_layer[0].numel() < max_kept:
+            already = set(int(p.item()) for p in keep_indices_per_layer[0])
+            score0 = attn_stats[0].mean(dim=0)
+            ranked = torch.argsort(score0, descending=True).tolist()
+            extras = []
+            for p in ranked:
+                if p not in already:
+                    extras.append(p)
+                    if keep_indices_per_layer[0].numel() + len(extras) >= max_kept:
+                        break
+            extras_t = torch.tensor(extras, device=device, dtype=torch.long)
+            keep_indices_per_layer[0] = (
+                torch.cat([keep_indices_per_layer[0], extras_t]).unique().sort().values
+            )
+
         select_tokens_per_layer(cache, keep_indices_per_layer)
         cache._seen_tokens = S
 
