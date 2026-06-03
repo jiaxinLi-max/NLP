@@ -59,9 +59,16 @@ def _patch_attn_for_head_bias(
             if attention_mask is None:
                 merged = new_bias
             else:
-                # eager_attention_forward slices to key_states.shape[-2], so
-                # both tensors get truncated to the same width by the slice;
-                # we only need to ensure the bias covers all K positions.
+                # Align bias width to mask width (layers with fewer K positions
+                # have a shorter bias; layers with max kv_len match exactly).
+                mask_len = attention_mask.shape[-1]
+                bias_len = new_bias.shape[-1]
+                if bias_len > mask_len:
+                    new_bias = new_bias[..., :mask_len]
+                elif bias_len < mask_len:
+                    new_bias = torch.nn.functional.pad(
+                        new_bias, (0, mask_len - bias_len),
+                    )
                 merged = attention_mask + new_bias.to(attention_mask.dtype)
             return orig_forward(hidden_states, attention_mask=merged, **kwargs)
         return forward
