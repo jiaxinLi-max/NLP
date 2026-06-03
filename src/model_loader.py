@@ -18,7 +18,7 @@ from transformers import (
 )
 
 
-DEFAULT_MODEL_ID = "/root/bayes-tmp/models/llama2-7b-chat"
+DEFAULT_MODEL_ID = "/root/bayes-tmp/project/models/llama2-7b-chat"
 
 
 def load_model(
