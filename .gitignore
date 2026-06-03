@@ -1,0 +1,8 @@
+models/
+data/
+.hf_cache/
+.pytest_cache/
+__pycache__/
+*.pyc
+results/
+.claude/

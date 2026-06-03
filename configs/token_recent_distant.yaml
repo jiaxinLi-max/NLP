@@ -1,0 +1,3 @@
+strategy: token_recent_distant
+keep_ratio: 0.5
+sink_frac: 0.1

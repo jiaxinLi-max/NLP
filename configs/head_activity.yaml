@@ -1,0 +1,4 @@
+strategy: head_activity
+keep_ratio: 0.5
+recent_window: 16
+min_per_head: 4

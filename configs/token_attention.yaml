@@ -1,0 +1,3 @@
+strategy: token_attention
+keep_ratio: 0.5
+recent_window: 32

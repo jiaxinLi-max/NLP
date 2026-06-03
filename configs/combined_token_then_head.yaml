@@ -1,0 +1,2 @@
+strategy: combined
+keep_ratio: 0.5  # cumulative; split as sqrt for each stage
