@@ -88,7 +88,7 @@ def load_gsm8k(split: str = "test", limit: int | None = None) -> List[GSM8KExamp
     """
     import json
     import os
-    local = f"/work/data/gsm8k/{split}.jsonl"
+    local = f"/root/bayes-tmp/project/data/gsm8k/{split}.jsonl"
     if os.path.exists(local):
         out: List[GSM8KExample] = []
         with open(local) as f:

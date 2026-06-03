@@ -107,7 +107,7 @@ def load_longbench(
 
     import json
     import os
-    local = f"/work/data/longbench/data/{task}.jsonl"
+    local = f"/root/bayes-tmp/project/data/longbench/data/{task}.jsonl"
     if os.path.exists(local):
         rows = []
         with open(local, encoding="utf-8") as f:
